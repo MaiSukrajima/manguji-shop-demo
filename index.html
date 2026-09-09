@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+<title>原始风 · 芒咕鸡山货文创小铺（Demo）</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:#F7F1E3;color:#3d2b1a;padding-bottom:70px}
+  .hero{background:linear-gradient(180deg,#6B4A2B,#8A5A33);color:#FFF6E5;padding:22px 16px}
+  .hero.gold{background:linear-gradient(180deg,#B8860B,#D4A017)}
+  .hero h1{font-size:22px;font-weight:800}
+  .hero p{font-size:12px;opacity:.9;margin-top:4px}
+  .cats{display:flex;gap:8px;overflow-x:auto;padding:10px 12px;background:#fff;border-bottom:1px solid #eee}
+  .cat{flex:none;padding:6px 14px;border-radius:14px;background:#f3ead8;font-size:13px;color:#6B4A2B}
+  .cat.on{background:#6B4A2B;color:#fff}
+  .grid{display:flex;flex-wrap:wrap;gap:10px;padding:12px}
+  .cell{width:calc(50% - 5px);background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+  .ph{height:120px;background:#EFE3CE;display:flex;align-items:center;justify-content:center;font-size:56px}
+  .im{width:100%;height:130px;object-fit:cover;display:block}
+  .info{padding:8px 10px 10px}
+  .nm{font-size:13px;font-weight:700;line-height:1.3}
+  .sub{font-size:11px;color:#a09080;margin:2px 0 6px;line-height:1.35}
+  .row{display:flex;align-items:center;justify-content:space-between}
+  .pr{color:#C0392B;font-weight:800;font-size:15px}
+  .u{font-size:10px;color:#999;font-weight:400}
+  .add{background:#6B4A2B;color:#fff;border:none;border-radius:6px;padding:5px 12px;font-size:12px}
+  .add.g{background:#D4A017}
+  .sec{font-size:13px;font-weight:800;color:#6B4A2B;padding:14px 14px 2px}
+  .tip{text-align:center;color:#b0a090;font-size:10px;padding:10px;line-height:1.6}
+  #bar{position:fixed;left:0;right:0;bottom:0;display:flex;background:#fff;border-top:1px solid #e5dcc8;z-index:9}
+  #bar div{flex:1;text-align:center;padding:8px 0 6px;font-size:11px;color:#8a8a7a}
+  #bar div.on{color:#6B4A2B;font-weight:700}
+  #bar .ic{font-size:19px;display:block}
+  .badge{position:absolute;margin:-30px 0 0 22px;background:#C0392B;color:#fff;border-radius:9px;font-size:9px;padding:1px 5px}
+  .pane{display:none}.pane.on{display:block}
+  #drawer{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;z-index:20}
+  #drawer.on{display:block}
+  #cartbox{position:absolute;right:0;bottom:0;width:88%;max-width:340px;background:#fff;border-radius:14px 14px 0 0;padding:14px;max-height:75vh;overflow:auto}
+  .cl{font-size:18px;color:#666;text-align:right;cursor:pointer}
+  .ci{display:flex;align-items:center;padding:8px 0;border-bottom:1px solid #f2ead8;gap:8px}
+  .ci .im{width:42px;height:42px;border-radius:8px;flex:none}
+  .ci .ph2{width:42px;height:42px;background:#EFE3CE;border-radius:8px;flex:none;display:flex;align-items:center;justify-content:center;font-size:22px}
+  .ci .m{flex:1}
+  .ci .nm{font-size:12px}.ci .sp{font-size:10px;color:#999}
+  .st{display:flex;align-items:center;gap:2px}
+  .st b{width:22px;height:22px;line-height:20px;text-align:center;border:1px solid #d8c8ae;font-weight:400;font-size:14px}
+  .st i{font-style:normal;min-width:22px;text-align:center;font-size:13px}
+  .foot{display:flex;align-items:center;justify-content:space-between;padding:10px 0 2px;font-size:13px}
+  .go{background:#C0392B;color:#fff;border:none;border-radius:8px;padding:8px 16px;font-size:13px}
+  .dlg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:30;align-items:center;justify-content:center}
+  .dlg.on{display:flex}
+  .dlgbox{background:#fff;border-radius:12px;width:82%;max-width:320px;padding:18px;text-align:center}
+  .dlgbox h3{font-size:15px;margin-bottom:8px}
+  .dlgbox p{font-size:12px;color:#777;line-height:1.7}
+  .ok{margin-top:12px;background:#6B4A2B;color:#fff;border:none;border-radius:8px;padding:8px 26px}
+</style>
+</head>
+<body>
+
+<div id="p1" class="pane on">
+  <div class="hero"><h1>原始风 · 山货小铺</h1><p>山里来的东西，得让人看得懂、信得过</p></div>
+  <div class="cats" id="cats"></div>
+  <div class="grid" id="g1"></div>
+</div>
+
+<div id="p2" class="pane">
+  <div class="hero gold"><h1>芒咕鸡 · 文创小铺</h1><p>糯扎渡山林的代言人 · Demo 统一 ¥39</p></div>
+  <div class="sec">🐥 毛绒公仔系列</div>
+  <div class="grid" id="g2"></div>
+  <div class="sec">🎁 细节与周边全家福</div>
+  <div class="grid" id="g3"></div>
+</div>
+
+<div id="p3" class="pane" style="padding:16px">
+  <div class="sec" style="padding:0 0 8px">🧺 购物篮</div>
+  <div id="cartlist" style="background:#fff;border-radius:12px;padding:6px 12px"></div>
+  <div class="foot" style="padding:12px 2px"><span>合计：<b id="sum" style="color:#C0392B">¥0</b></span>
+    <button class="go" onclick="checkout()">去结算</button></div>
+  <div class="tip">Demo 演示版：价格为示例，不产生真实交易</div>
+</div>
+
+<div id="bar">
+  <div class="on" onclick="tab(1)"><span class="ic">🌾</span>山货</div>
+  <div onclick="tab(2)"><span class="ic">🐥</span>文创</div>
+  <div onclick="tab(3)"><span class="ic">🧺</span>篮子<b id="cnt" class="badge" style="display:none">0</b></div>
+</div>
+
+<div id="drawer" onclick="if(event.target==this)closeCart()"><div id="cartbox">
+  <div class="cl" onclick="closeCart()">✕</div><div id="dc"></div>
+  <div class="foot"><span>合计：<b id="dsum" style="color:#C0392B">¥0</b></span><button class="go" onclick="goCheck()">去结算</button></div>
+</div></div>
+
+<div id="dlg" class="dlg"><div class="dlgbox">
+  <h3>🎉 下单成功（模拟）</h3><p>这是 Demo 版，不会真的扣款。<br/>正式上线需注册小程序、接入微信支付商户号与商品资质。</p>
+  <button class="ok" onclick="closeDlg()">知道了</button>
+</div></div>
+
+<script>
+var GOODS=[
+ {id:1,name:'大寨卤腐（传统工艺）',price:18,unit:'罐/280g',emoji:'🫙',cat:'发酵',tags:'非遗技艺'},
+ {id:2,name:'山林土鸡（散养）',price:128,unit:'只/约2kg',emoji:'🐔',cat:'鲜货',tags:'散养山地'},
+ {id:3,name:'高山芒果',price:39.9,unit:'箱/5kg',emoji:'🥭',cat:'鲜果',tags:'时令产地直发'},
+ {id:4,name:'古树茶（生普）',price:88,unit:'饼/200g',emoji:'🍵',cat:'茶饮',tags:'古树可存'},
+ {id:5,name:'小粒咖啡豆',price:68,unit:'袋/250g',emoji:'☕',cat:'咖啡',tags:'中深烘'},
+ {id:6,name:'山货大礼盒',price:168,unit:'盒',emoji:'🎁',cat:'礼盒',tags:'伴手礼组合'}];
+var CATS=['全部','发酵','鲜货','鲜果','茶饮','咖啡','礼盒'];
+var WC1=[
+ {id:'d1',name:'芒咕鸡·治愈基础款',sub:'毛绒公仔 · 圆滚滚纯真模样',img:'images/wc/wc04.jpg'},
+ {id:'d2',name:'芒咕鸡·山野精灵款',sub:'拉祜织锦民族风',img:'images/wc/wc01.jpg'},
+ {id:'d3',name:'芒咕鸡·芒芒甜心款',sub:'金冠芭蕾公主风',img:'images/wc/wc02.jpg'},
+ {id:'d4',name:'芒咕鸡·跑山勇士款',sub:'红披风活力风',img:'images/wc/wc03.jpg'}];
+var WC2=[
+ {id:'f1',name:'山野精灵·多角度',sub:'细节展示',img:'images/wc/wc08.jpg'},
+ {id:'f2',name:'治愈基础·多角度',sub:'细节展示',img:'images/wc/wc05.jpg'},
+ {id:'f3',name:'芒芒甜心·多角度',sub:'细节展示',img:'images/wc/wc07.jpg'},
+ {id:'f4',name:'跑山勇士·多角度',sub:'细节展示',img:'images/wc/wc06.jpg'},
+ {id:'f5',name:'山野精灵·周边全家福',sub:'帆布袋/手机壳/杯垫/徽章…',img:'images/wc/wc09.jpg'},
+ {id:'f6',name:'跑山勇士·周边全家福',sub:'马克杯/挂绳/圆镜/抱枕…',img:'images/wc/wc10.jpg'},
+ {id:'f7',name:'芒芒甜心·周边全家福',sub:'钥匙扣/零钱包/手机壳…',img:'images/wc/wc11.jpg'}];
+var cart={}; var curCat='全部';
+function money(n){return n%1===0?n:n.toFixed(2)}
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;')}
+function imgHtml(g){return g.img?'<img class="im" src="'+g.img+'" onclick="window.open(this.src)"/>':'<div class="ph">'+g.emoji+'</div>'}
+function cardHtml(g,cls){
+ var t=esc(g.name)+(g.sub?'<div class="sub">'+esc(g.sub)+'</div>':'');
+ var extra=g.img?'':'<div class="sub">'+esc(g.tags||'')+'</div>';
+ return '<div class="cell"><div style="position:relative">'+imgHtml(g)+'</div><div class="info"><div class="nm">'+t+'</div>'+extra+
+ '<div class="row"><span class="pr">¥'+money(g.price)+'<span class="u">/'+(g.unit||'件')+'</span></span>'+
+ '<button class="add'+(cls==='g'?' g':'')+'" onclick="add('+(g.id)+')">加篮子</button></div></div></div>';
+}
+function render(){
+ var cats=document.getElementById('cats');cats.innerHTML='';
+ CATS.forEach(function(c){cats.insertAdjacentHTML('beforeend','<span class="cat'+(c===curCat?' on':'')+'" onclick="setCat(\''+c+'\')">'+c+'</span>')});
+ var list=curCat==='全部'?GOODS:GOODS.filter(function(g){return g.cat===curCat});
+ document.getElementById('g1').innerHTML=list.map(function(g){return cardHtml(g,'s')}).join('');
+ document.getElementById('g2').innerHTML=WC1.map(function(g){return cardHtml(g,'g')}).join('');
+ document.getElementById('g3').innerHTML=WC2.map(function(g){return cardHtml(g,'g')}).join('');
+}
+function setCat(c){curCat=c;render()}
+function idOf(o){return (o.img?'wc-':'g-')+o.id}
+function add(id,fromWc){
+ var o=null;
+ GOODS.concat([]).forEach(function(g){if(g.id===id)o=g});
+ if(!o){WC1.concat(WC2).forEach(function(g){if(g.id===id)o=g})}
+ if(!o)return;
+ var k=idOf(o);
+ if(!cart[k])cart[k]={name:o.name,price:o.price,unit:o.unit||'件',img:o.img||'',emoji:o.emoji||'🛍',num:0};
+ cart[k].num++;
+ refresh(); var b=document.getElementById('cnt');b.style.display='block';b.textContent=count();
+}
+function count(){var n=0;for(var k in cart)n+=cart[k].num;return n}
+function total(){var t=0;for(var k in cart)t+=cart[k].price*cart[k].num;return t}
+function refresh(){
+ var n=count();var b=document.getElementById('cnt');b.style.display=n?'block':'none';b.textContent=n;
+ var el=document.getElementById('cartlist');
+ if(n===0){el.innerHTML='<div style="padding:40px 0;text-align:center;color:#a09080">篮子是空的<br/>去挑点山里来的东西吧</div>'}
+ else{el.innerHTML='';for(var k in cart){var c=cart[k];
+  el.insertAdjacentHTML('beforeend','<div class="ci">'+(c.img?'<img class="im" src="'+c.img+'"/>':'<div class="ph2">'+c.emoji+'</div>')+
+  '<div class="m"><div class="nm">'+esc(c.name)+'</div><div class="sp">¥'+money(c.price)+'/'+c.unit+'</div></div>'+
+  '<div class="st"><b onclick="chg(\''+k+'\',-1)">−</b><i>'+c.num+'</i><b onclick="chg(\''+k+'\',1)">+</b></div></div>')}
+  el.insertAdjacentHTML('afterend','')}
+ document.getElementById('sum').textContent='¥'+money(total());
+}
+function chg(k,d){if(!cart[k])return;cart[k].num+=d;if(cart[k].num<=0)delete cart[k];refresh()}
+function tab(i){['p1','p2','p3'].forEach(function(id,i2){document.getElementById(id).classList.toggle('on',i2+1===i)});
+ var ds=document.querySelectorAll('#bar div');ds.forEach(function(d,j){d.classList.toggle('on',j+1===i)});
+ if(i===3)refresh();window.scrollTo(0,0)}
+function openCart(){document.getElementById('drawer').classList.add('on');refresh()}
+function closeCart(){document.getElementById('drawer').classList.remove('on')}
+function goCheck(){closeCart();tab(3)}
+function checkout(){if(!count())return;document.getElementById('dlg').classList.add('on')}
+function closeDlg(){document.getElementById('dlg').classList.remove('on');cart={};refresh()}
+render();
+</script>
+</body>
+</html>
