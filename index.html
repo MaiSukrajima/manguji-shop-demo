@@ -121,7 +121,8 @@ var WC2=[
 var cart={}; var curCat='全部';
 function money(n){return n%1===0?n:n.toFixed(2)}
 function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;')}
-function imgHtml(g){return g.img?'<img class="im" src="'+g.img+'" onclick="window.open(this.src)"/>':'<div class="ph">'+g.emoji+'</div>'}
+function broken(el){el.onerror=null;var d=document.createElement('div');d.className='ph';d.style.height='130px';d.textContent='🐥';el.replaceWith(d);}
+function imgHtml(g){return g.img?'<img class="im" src="'+g.img+'" onclick="window.open(this.src)" onerror="broken(this)"/>':'<div class="ph">'+g.emoji+'</div>'}
 function cardHtml(g,cls){
  var t=esc(g.name)+(g.sub?'<div class="sub">'+esc(g.sub)+'</div>':'');
  var extra=g.img?'':'<div class="sub">'+esc(g.tags||'')+'</div>';
